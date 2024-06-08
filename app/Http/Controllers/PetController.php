@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePetRequest;
+use App\Http\Requests\UpdatePetRequest;
 use Illuminate\Http\Request;
+use App\Models\Pet;
+use Exception;
 
 class PetController extends Controller
 {
@@ -11,54 +15,58 @@ class PetController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return Pet::all();
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePetRequest $request)
     {
-        //
+        $pet = Pet::create([
+            'person_id' => $request->person_id,
+            'name' => $request->name,
+            'type' => $request->type,
+            'age' => $request->age,
+        ]);
+
+        return $pet;
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $pet)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return Pet::find($pet);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdatePetRequest $request, string $pet)
     {
-        //
+        $petObject = Pet::find($pet);
+
+        $petObject->update([
+            'person_id' => $request->person_id,
+            'name' => $request->name,
+            'type' => $request->type,
+            'age' => $request->age,
+        ]);
+
+        return $petObject;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $pet)
     {
-        //
+        $petObject = Pet::find($pet);
+
+        $petObject->delete();
+
+        return $petObject;
     }
 }

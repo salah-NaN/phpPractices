@@ -18,6 +18,8 @@ class Pet extends Model
         'age'
     ];
 
+    public $timestamps = false;
+
     /**
      * Get the person that owns the Pet
      *
