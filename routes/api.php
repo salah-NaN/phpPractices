@@ -12,6 +12,9 @@ Route::apiResource('users', UserController::class);
 Route::apiResource('pets', PetController::class);
 Route::apiResource('people', PersonController::class);
 
+// custom pet endpoints 
+Route::get('people/{person}/pets', [PetController::class, 'getPetsByPerson']);
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();

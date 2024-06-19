@@ -6,6 +6,7 @@ use App\Http\Requests\StorePetRequest;
 use App\Http\Requests\UpdatePetRequest;
 use Illuminate\Http\Request;
 use App\Models\Pet;
+use App\Models\Person;
 use Exception;
 
 class PetController extends Controller
@@ -68,5 +69,28 @@ class PetController extends Controller
         $petObject->delete();
 
         return $petObject;
+    }
+
+
+
+    /**
+     * Custom endpoint to get all pets by a person.
+     */
+    public function getPetsByPerson($personId)
+    {
+        $person = Person::find($personId);
+
+        if (!$person) {
+            return response()->json([
+                "message" => "Person not found",
+            ], 404);
+        }
+
+        $pets = Pet::where('person_id', $personId)->get();
+
+        return response()->json([
+            "person" => $person,
+            "pets" => $pets,
+        ], 200);
     }
 }
